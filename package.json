@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend for Chattie using sockets",
+  "main": "dist/index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon --watch src --exec babel-node src/index.js",
+    "build": "rimraf dist && babel src -d dist"
+  },
+  "author": "Coffe Jean Code",
+  "license": "ISC"
+}
