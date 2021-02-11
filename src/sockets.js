@@ -3,55 +3,55 @@ import {
   removeUser,
   getUser,
   getUsersInRoom,
-} from './controllers/user.ctr'
+} from "./controllers/user.ctr";
 
 const sockets = (socket, io) => {
-  socket.on('join', ({ name, room }, callback) => {
-    const { error, user } = addUser({ id: socket.id, name, room })
+  socket.on("join", ({ name, room }, callback) => {
+    const { error, user } = addUser({ id: socket.id, name, room });
 
-    if (error) return callback(error)
+    if (error) return callback(error);
 
-    socket.emit('message', {
-      user: 'admin',
+    socket.emit("message", {
+      user: "admin",
       text: `${user.name}, welcome to room ${user.room}`,
-    })
+    });
 
     socket.broadcast
       .to(user.room)
-      .emit('message', { user: 'admin', text: `${user.name} has join!` })
+      .emit("message", { user: "admin", text: `${user.name} has join!` });
 
-    socket.join(user.room)
+    socket.join(user.room);
 
-    io.to(user.room).emit('roomData', {
+    io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUsersInRoom({ room: user.room }),
-    })
+    });
 
-    callback()
-  })
+    callback();
+  });
 
-  socket.on('sendMessage', (message) => {
-    const user = getUser({ id: socket.id })
+  socket.on("sendMessage", (message) => {
+    const user = getUser({ id: socket.id });
 
-    if (!user) return
+    if (!user) return;
 
-    io.to(user.room).emit('message', { user: user.name, text: message })
-    io.to(user.room).emit('roomData', {
+    io.to(user.room).emit("message", { user: user.name, text: message });
+    io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUsersInRoom({ room: user.room }),
-    })
-  })
+    });
+  });
 
-  socket.on('disconnect', () => {
-    const user = removeUser({ id: socket.id })
+  socket.on("disconnect", () => {
+    const user = removeUser({ id: socket.id });
 
     if (user) {
-      io.to(user.room).emit('message', {
-        user: 'admin',
+      io.to(user.room).emit("message", {
+        user: "admin",
         text: `${user.name} has left.`,
-      })
+      });
     }
-  })
-}
+  });
+};
 
-export default sockets
+export default sockets;
