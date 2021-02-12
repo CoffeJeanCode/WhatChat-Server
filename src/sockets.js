@@ -43,7 +43,7 @@ const sockets = (socket, io) => {
         user: user.name,
         text: decryptedMessage,
       });
-    }, 500);
+    }, 250);
 
     io.to(user.room).emit("roomData", {
       room: user.room,
