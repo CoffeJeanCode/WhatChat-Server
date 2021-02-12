@@ -1,3 +1,4 @@
+import { decrypt } from "./utils/decrypt";
 import {
   addUser,
   removeUser,
@@ -35,7 +36,13 @@ const sockets = (socket, io) => {
 
     if (!user) return;
 
-    io.to(user.room).emit("message", { user: user.name, text: message });
+    const decryptedMessage = decrypt(message, user.room);
+
+    io.to(user.room).emit("message", {
+      user: user.name,
+      text: decryptedMessage,
+    });
+
     io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUsersInRoom({ room: user.room }),
