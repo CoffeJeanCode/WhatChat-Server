@@ -36,8 +36,7 @@ const sockets = (socket, io) => {
 
     if (!user) return;
 
-    const decryptedMessage = decrypt(message, user.room);
-
+    const decryptedMessage = decrypt(message, user.room.trim());
     io.to(user.room).emit("message", {
       user: user.name,
       text: decryptedMessage,
