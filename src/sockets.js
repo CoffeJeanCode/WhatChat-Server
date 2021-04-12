@@ -1,10 +1,11 @@
-import { decrypt } from "./utils/decrypt";
 import {
   addUser,
-  removeUser,
   getUser,
   getUsersInRoom,
+  removeUser,
 } from "./controllers/user.ctr";
+import { createId } from "./utils/createId";
+import { decrypt } from "./utils/decrypt";
 
 const sockets = (socket, io) => {
   socket.on("join", ({ name, room }, callback) => {
@@ -13,6 +14,7 @@ const sockets = (socket, io) => {
     if (error) return callback(error);
 
     socket.emit("message", {
+      id: createId(),
       user: "admin",
       text: `${user.name}, welcome to room ${user.room}`,
     });
